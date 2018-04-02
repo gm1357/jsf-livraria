@@ -14,50 +14,50 @@ import br.com.caelum.livraria.modelo.Livro;
 @ViewScoped
 public class LivroBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private Livro livro = new Livro();
-    private Integer autorId;
+	private Livro livro = new Livro();
+	private Integer autorId;
 
-    public void setAutorId(Integer autorId) {
-        this.autorId = autorId;
-    }
+	public void setAutorId(Integer autorId) {
+		this.autorId = autorId;
+	}
 
-    public Integer getAutorId() {
-        return autorId;
-    }
+	public Integer getAutorId() {
+		return autorId;
+	}
 
-    public Livro getLivro() {
-        return livro;
-    }
+	public Livro getLivro() {
+		return livro;
+	}
 
-    public List<Livro> getLivros() {
-        return new DAO<Livro>(Livro.class).listaTodos();
-    }
+	public List<Livro> getLivros() {
+		return new DAO<Livro>(Livro.class).listaTodos();
+	}
 
-    public List<Autor> getAutores(){
-        List<Autor> autores = new DAO<Autor>(Autor.class).listaTodos();
-        System.out.println(autores);
-        return autores;
-    }
+	public List<Autor> getAutores() {
+		return new DAO<Autor>(Autor.class).listaTodos();
+	}
 
-    public List<Autor> getAutoresDoLivro() {
-        return this.livro.getAutores();
-    }
+	public List<Autor> getAutoresDoLivro() {
+		return this.livro.getAutores();
+	}
 
-    public void gravarAutor() {
-        Autor autor = new DAO<Autor>(Autor.class).buscaPorId(this.autorId);
-        this.livro.adicionaAutor(autor);
-    }
+	public void gravarAutor() {
+		Autor autor = new DAO<Autor>(Autor.class).buscaPorId(this.autorId);
+		this.livro.adicionaAutor(autor);
+	}
 
-    public void gravar() {
-        System.out.println("Gravando livro " + this.livro.getTitulo());
+	public void gravar() {
+		System.out.println("Gravando livro " + this.livro.getTitulo());
 
-        if (livro.getAutores().isEmpty()) {
-            throw new RuntimeException("Livro deve ter pelo menos um Autor.");
-        }
+		if (livro.getAutores().isEmpty()) {
+			throw new RuntimeException("Livro deve ter pelo menos um Autor.");
+		}
 
-        new DAO<Livro>(Livro.class).adiciona(this.livro);
-        this.livro = new Livro();
-    }
+		new DAO<Livro>(Livro.class).adiciona(this.livro);
+
+		this.livro = new Livro();
+	}
+
 }
