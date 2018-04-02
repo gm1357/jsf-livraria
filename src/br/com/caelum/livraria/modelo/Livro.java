@@ -24,7 +24,7 @@ public class Livro implements Serializable {
 	private String titulo;
 	private String isbn;
 	private double preco;
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
     private Calendar dataLancamento = Calendar.getInstance();
 
 	@ManyToMany
