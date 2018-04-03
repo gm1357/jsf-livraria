@@ -22,6 +22,7 @@ public class LivroBean implements Serializable {
 
 	private Livro livro = new Livro();
 	private Integer autorId;
+	private List<Livro> livros;
 
 	public void setAutorId(Integer autorId) {
 		this.autorId = autorId;
@@ -35,8 +36,19 @@ public class LivroBean implements Serializable {
 		return livro;
 	}
 
+	public void setLivro(Livro livro) {
+		this.livro = livro;
+	}
+
 	public List<Livro> getLivros() {
-		return new DAO<Livro>(Livro.class).listaTodos();
+
+	    DAO<Livro> dao = new DAO<Livro>(Livro.class);
+
+	    if(this.livros == null) {
+	        this.livros = dao.listaTodos();            
+	    }
+
+	    return livros;
 	}
 
 	public List<Autor> getAutores() {
@@ -53,31 +65,32 @@ public class LivroBean implements Serializable {
 	}
 
 	public void gravar() {
-        System.out.println("Gravando livro " + this.livro.getTitulo());
+	    System.out.println("Gravando livro " + this.livro.getTitulo());
 
-        if (livro.getAutores().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage("autor",  new FacesMessage("Livro deve ter pelo menos um Autor"));
-            return;
-        } else {
-            
-        	if (this.livro.getId() == null) {
-                new DAO<Livro>(Livro.class).adiciona(this.livro);        
-            } else {
-                new DAO<Livro>(Livro.class).atualiza(this.livro);
-            }
-        	
-            this.livro = new Livro();
-        }
-    }
-	
-	public void carregar(Livro livro) {
-	    System.out.println("Carregando livro " + livro.getTitulo());
-	    this.livro = livro;
+	    if (livro.getAutores().isEmpty()) {
+	        FacesContext.getCurrentInstance().addMessage("autor",
+	                new FacesMessage("Livro deve ter pelo menos um Autor."));
+	        return;
+	    }
+
+	    DAO<Livro> dao = new DAO<Livro>(Livro.class);
+
+	    if(this.livro.getId() == null) {
+	        dao.adiciona(this.livro);
+	        this.livros = dao.listaTodos();
+	    } else {
+	        dao.atualiza(this.livro);
+	    }
+
+	    this.livro = new Livro();
 	}
 	
 	public void remover(Livro livro) {
+		DAO<Livro> dao = new DAO<Livro>(Livro.class);
+		
 	    System.out.println("Removendo livro " + livro.getTitulo());
-	    new DAO<Livro>(Livro.class).remove(livro);
+	    dao.remove(livro);
+	    this.livros = dao.listaTodos();
 	}
 	
 	public void removerAutorDoLivro(Autor autor) {
