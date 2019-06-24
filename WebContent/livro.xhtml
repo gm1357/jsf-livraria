@@ -105,9 +105,7 @@
 			        </p:column>
 	
 	                <p:column headerText="Alterar">
-	                    <p:commandButton icon="fa fa-fw fa-edit" update=":livrosDados">
-	                        <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livro}" />
-	                    </p:commandButton>
+	                    <p:commandButton icon="fa fa-fw fa-edit" update=":livrosDados" action="#{livroBean.carregar(livro)}" />
 	                </p:column>                    
 	
 	                <p:column headerText="Remover">
